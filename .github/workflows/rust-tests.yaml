@@ -42,4 +42,6 @@ jobs:
           junit-paths: rust/**/nextest/ci/*junit.xml
           org-slug: nix
           token: ${{ secrets.TRUNK_API_TOKEN }}
-        continue-on-error: true          
+        continue-on-error: true    
+        env:
+          TRUNK_PUBLIC_API_ADDRESS: https://api.trunk-staging.io
