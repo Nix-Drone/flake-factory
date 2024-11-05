@@ -36,16 +36,25 @@ jobs:
         working-directory: go/src
         continue-on-error: true
 
-      - name: Upload test results
-        if: ${{ always() }}
-        uses: ./.github/actions/analytics-uploader-wrapper
+      - name: Validate results
+        # Run this step even if the test step ahead fails
+        if: "!cancelled()"
+        run: |
+          curl https://get.trunk.io -fsSL | bash
+          trunk flakytests validate --junit-paths "rust/**/nextest/ci/*junit.xml"                    
+        continue-on-error: true    
+
+      - name: Upload results
+        # Run this step even if the test step ahead fails
+        if: "!cancelled()"
+        uses: trunk-io/analytics-uploader@main
         with:
-          token-staging: ${{ secrets.TRUNK_STAGING_ORG_API_TOKEN }}
-          token-prod: ${{ secrets.TRUNK_PROD_ORG_API_TOKEN }}
-          token-dev: ${{ secrets.TRUNK_DEV_ORG_API_TOKEN }}
-          token-dev2: ${{ secrets.TRUNK_DEV2_ORG_API_TOKEN }}
-          cli-version: ${{ inputs.cli-version }}
           junit-paths: "**/go-junit-report_test.xml"
+          org-slug: nix
+          token: ${{ secrets.TRUNK_API_TOKEN }}
+        continue-on-error: true    
+        env:
+          TRUNK_PUBLIC_API_ADDRESS: https://api.trunk-staging.io          
 
       - name: Upload artifacts
         if: ${{ always() }}
@@ -63,17 +72,18 @@ jobs:
         # we pass in env GORUNNER so that a unique retry file will be created
         run: gotestsum --rerun-fails=3 --junitfile gotestsum_test.xml
         working-directory: go/src
-
-      - name: Upload test results
-        if: ${{ always() }}
-        uses: ./.github/actions/analytics-uploader-wrapper
+        
+      - name: Upload results
+        # Run this step even if the test step ahead fails
+        if: "!cancelled()"
+        uses: trunk-io/analytics-uploader@main
         with:
-          token-staging: ${{ secrets.TRUNK_STAGING_ORG_API_TOKEN }}
-          token-prod: ${{ secrets.TRUNK_PROD_ORG_API_TOKEN }}
-          token-dev: ${{ secrets.TRUNK_DEV_ORG_API_TOKEN }}
-          token-dev2: ${{ secrets.TRUNK_DEV2_ORG_API_TOKEN }}
-          cli-version: ${{ inputs.cli-version }}
           junit-paths: "**/gotestsum_test.xml"
+          org-slug: nix
+          token: ${{ secrets.TRUNK_API_TOKEN }}
+        continue-on-error: true    
+        env:
+          TRUNK_PUBLIC_API_ADDRESS: https://api.trunk-staging.io    
 
       - name: Upload artifacts
         if: ${{ always() }}
