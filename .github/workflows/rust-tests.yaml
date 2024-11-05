@@ -39,9 +39,8 @@ jobs:
         # Run this step even if the test step ahead fails
         if: "!cancelled()"
         run: |
-          curl -fsSL --retry 3 "https://github.com/trunk-io/analytics-cli/releases/latest/download/trunk-analytics-cli-x86_64-unknown-linux.tar.gz" | tar -xvz > ./trunk-analytics-cli
-          ./trunk-analytics-cli validate --junit-paths "rust/**/nextest/ci/*junit.xml"
-          rm ./trunk-analytics-cli          
+          curl https://get.trunk.io -fsSL | bash
+          trunk flakytests validate --junit-paths "rust/**/nextest/ci/*junit.xml"                    
         continue-on-error: true    
 
       - name: Upload results
