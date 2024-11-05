@@ -45,5 +45,6 @@ if merge_process.returncode == 0:
     print(f"Merged pull request number {pr}")
 else:
     print(f"Failed to merge pull request number {pr}")
-    print(f"Error: {merge_process.stderr}")
+    print(f"stderr: {merge_process.stderr}")
+    print(f"stdout: {merge_process.stdout}")
     sys.exit(1)
