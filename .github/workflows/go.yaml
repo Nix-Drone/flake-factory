@@ -70,7 +70,7 @@ jobs:
         env:
           GORUNNER: GOTESTSUM
         # we pass in env GORUNNER so that a unique retry file will be created
-        run: gotestsum --rerun-fails=3 --junitfile gotestsum_test.xml
+        run: gotestsum --rerun-fails=3 --junitfile ""**/gotestsum_test.xml"
         working-directory: go/src
         
       - name: Upload results
