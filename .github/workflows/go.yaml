@@ -41,7 +41,7 @@ jobs:
         if: "!cancelled()"
         run: |
           curl https://get.trunk.io -fsSL | bash
-          trunk flakytests validate --junit-paths "rust/**/nextest/ci/*junit.xml"                    
+          trunk flakytests validate --junit-paths "**/go-junit-report_test.xml"
         continue-on-error: true    
 
       - name: Upload results
