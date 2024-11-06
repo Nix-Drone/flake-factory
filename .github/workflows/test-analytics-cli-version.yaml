@@ -19,7 +19,7 @@ on:
 
 jobs:
   rerun:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - name: Run all test workflows with CLI version ${{ inputs.cli-version || 'latest' }}
         env:
