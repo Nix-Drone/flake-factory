@@ -31,10 +31,7 @@ jobs:
       - name: Run rspec tests
         uses: ./.github/actions/analytics-uploader-wrapper
         with:
-          token-staging: ${{ secrets.TRUNK_STAGING_ORG_API_TOKEN }}
-          token-prod: ${{ secrets.TRUNK_PROD_ORG_API_TOKEN }}
-          token-dev: ${{ secrets.TRUNK_DEV_ORG_API_TOKEN }}
-          token-dev2: ${{ secrets.TRUNK_DEV2_ORG_API_TOKEN }}
+          token-staging: ${{ secrets.TRUNK_API_TOKEN }}
           cli-version: ${{ inputs.cli-version }}
           junit-paths: "**/rspec_test.xml"
           run: bundle exec rspec ruby/rspec --format RspecJunitFormatter --out rspec_test.xml
@@ -43,10 +40,7 @@ jobs:
         if: ${{ always() }}
         uses: ./.github/actions/analytics-uploader-wrapper
         with:
-          token-staging: ${{ secrets.TRUNK_STAGING_ORG_API_TOKEN }}
-          token-prod: ${{ secrets.TRUNK_PROD_ORG_API_TOKEN }}
-          token-dev: ${{ secrets.TRUNK_DEV_ORG_API_TOKEN }}
-          token-dev2: ${{ secrets.TRUNK_DEV2_ORG_API_TOKEN }}
+          token-staging: ${{ secrets.TRUNK_API_TOKEN }}          
           cli-version: ${{ inputs.cli-version }}
           junit-paths: "**/ruby/minitest/results/*.xml"
           run: bundle exec ruby ruby/minitest/mixer.rb
